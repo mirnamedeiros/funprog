@@ -100,8 +100,6 @@ infixl 1 <==
 
 -- logical equivalence
 (<=>) :: Bool -> Bool -> Bool
-(<=>) True False = False
-(<=>) False True = False
-(<=>) _ _ = True
+(<=>) a b = (a ==> b) && (a <== b) 
 
 infixr 1 <=>
