@@ -4,11 +4,10 @@ import Prelude
     ( Char , String , Int , Integer , Double , Float , Bool(..)
     , Num(..) , Integral(..) , Enum(..) , Ord(..) , Eq(..)
     , not , (&&) , (||)
-    , (.) , ($)
-    , flip , curry , uncurry
+    , (.) , ($), curry , uncurry
     , otherwise , error , undefined
     )
-import qualified Prelude   as P
+import qualified Prelude   as P hiding (flip, reverse, drop)
 import qualified Data.List as L
 import qualified Data.Char as C
 
@@ -22,25 +21,32 @@ import qualified Data.Char as C
 -- You MUST NOT use ANY of these in your code
 
 head :: [a] -> a
-head = undefined
+head [] = error "empty list has no head"
+head (x:_) = x
 
 tail :: [a] -> [a]
-tail = undefined
+tail [] = error "empty list has no tail"
+tail (_:xs) = xs
 
 null :: [a] -> Bool
-null = undefined
+null [] = True
+null _ = False
 
 length :: Integral i => [a] -> i
-length = undefined
+length [] = 0
+lenght (_:xs) = 1 + lenght xs 
 
 sum :: Num a => [a] -> a
-sum = undefined
+sum [] = 0
+sum (x:xs) = x + sum xs
 
 product :: Num a => [a] -> a
-product = undefined
+product [] = 0
+product (x:xs) = x + product xs
 
 reverse :: [a] -> [a]
-reverse = undefined
+reverse [] = []
+reverse (x:xs) = snoc x (reverse xs)     
 
 (++) :: [a] -> [a] -> [a]
 (++) = undefined
@@ -49,12 +55,15 @@ reverse = undefined
 -- (what?!)
 infixr 5 ++
 
--- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
-snoc = undefined
+snoc y [] = [y]
+snoc y (z:zs) = z : snoc y zs
 
 (<:) :: [a] -> a -> [a]
 (<:) = flip snoc
+
+flip :: (a -> b -> c) -> (b -> a -> c) 
+flip f x y = f y x
 
 -- different implementation of (++)
 (+++) :: [a] -> [a] -> [a]
@@ -66,11 +75,27 @@ xs +++ (y:ys) = (xs +++ [y]) +++ ys
 -- (hmm?)
 infixl 5 +++
 
--- minimum :: Ord a => [a] -> a
--- maximum :: Ord a => [a] -> a
+minimum :: Ord a => [a] -> a
+minimum [] = error "empty list"
+minimum [x] = x
+minimum (x:xs) = if x < m then x else m
+    where m = minimum xs
 
--- take
--- drop
+maximum :: Ord a => [a] -> a
+maximum [] = error "empty list"
+maximum [x] = x
+maximum (x:xs) = if x > m then x else m
+    where m = maximum xs
+
+take :: Int -> [a] -> [a]
+take _ [] = []
+take 0 xs = []
+take n (x:xs) = x : (take (n-1) xs)
+
+drop :: Int -> [a] -> [a]
+drop _ [] = []
+drop 0 xs = xs
+drop n (_:xs) = drop (n-1) xs
 
 -- takeWhile
 -- dropWhile
