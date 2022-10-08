@@ -83,7 +83,6 @@ odd (Succ(Succ x)) = odd x
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 (<->) :: Nat -> Nat -> Nat
- 
 (<->) x Zero = x
 (<->) (Succ x) (Succ y) = (<->) x y
 (<->) x y = Zero
@@ -101,7 +100,9 @@ odd (Succ(Succ x)) = odd x
 -- quotient
 (</>) :: Nat -> Nat -> Nat --imcompleto
 (</>) x Zero = error "divisão por zero é indefinido"
-(</>) x y = if x <= y then Zero else (<+>) (Succ Zero) ((</>) ((<->) x y) y)
+(</>) x y 
+    | x <= y -> Zero 
+    | otherwise (<+>) (Succ Zero) ((</>) ((<->) x y) y)
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
@@ -126,7 +127,8 @@ factorial = undefined
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg Zero = Zero
+sg _ = Succ Zero
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
@@ -148,15 +150,15 @@ fromNat (Succ x) = 1 + fromNat x
 
 
 -- Obs: we can now easily make Nat an instance of Num.
--- instance Num Nat where
+instance Num Nat where
 
-    -- (+) = (<+>)
-    -- (*) = (<*>)
-    -- (-) = (<->)
-    -- abs n = n
-    -- signum = sg
-    -- fromInteger x
-    --     | x < 0     = undefined
-    --     | x == 0    = undefined
-    --     | otherwise = undefined
+    (+) = (<+>)
+    (*) = (<*>)
+    (-) = (<->)
+    abs n = n
+    signum = sg
+    fromInteger x
+        | x < 0     = undefined
+        | x == 0    = undefined
+        | otherwise = undefined
 
