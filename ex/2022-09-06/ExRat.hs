@@ -38,3 +38,5 @@ denominator (Rat x y) = y
 
 numerator :: Rat -> Integer
 numerator (Rat x y) = x
+
+-- test
