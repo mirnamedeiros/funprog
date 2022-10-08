@@ -6,13 +6,13 @@ module ExRat
     ) where
 
 -- define Rat:
-data Rat
+data Rat = Rat Integer Integer
 
 instance Show Rat where
-    show = undefined
+    show (Rat m n) = show m ++ "/" ++ show n
 
 instance Eq Rat where
-    (==) = undefined
+    Rat x y == Rat m n = x * n == y * m 
 
 instance Num Rat where
     (+) = undefined
@@ -26,14 +26,15 @@ instance Ord Rat where
     compare = undefined
 
 rat :: Integer -> Integer -> Rat
-rat = undefined
+rat x y 
+    | y == 0 = error "division by zero is undefined"
+    | otherwise = Rat x y 
 
 (//) :: Rat -> Rat -> Rat
 (//) = undefined
 
 denominator :: Rat -> Integer
-denominator = undefined
+denominator (Rat x y) = y
 
 numerator :: Rat -> Integer
-numerator = undefined
-
+numerator (Rat x y) = x
