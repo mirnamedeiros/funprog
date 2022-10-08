@@ -30,7 +30,7 @@ rat x y
     | y == 0 = error "division by zero is undefined"
     | otherwise = Rat x y 
 
-(//) :: Rat -> Rat -> Rat
+(//) :: Rat -> Rat -> Rat 
 (//) = undefined
 
 denominator :: Rat -> Integer
