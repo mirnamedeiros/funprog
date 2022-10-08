@@ -97,16 +97,40 @@ drop _ [] = []
 drop 0 xs = xs
 drop n (_:xs) = drop (n-1) xs
 
--- takeWhile
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile _ []                 = []
+takeWhile f (x:xs)  | f x       = x : takeWhile f xs
+                    | otherwise = []
+
 -- dropWhile
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile _ [] = []
+dropWhile f (x:xs) 
+    | f x = dropWhile f xs
+    | otherwise = x:xs
 
 -- tails
+tails :: [a] -> [[a]]
+tails [] = [[]]
+tails (x:xs) = (x:xs) : tails xs
+
 -- init
+init :: [a] -> [a]
+init [] = error "empty list"
+init [x] = [] 
+init (x:xs) = x : init xs
+
 -- inits
+inits :: [a] -> [[a]]
+inits [] = [[]]
+inits xs = inits (init xs) <: xs 
 
 -- subsequences
 
 -- any
+any :: (a -> Bool) -> [a] -> Bool
+any f = undefined
+
 -- all
 
 -- and
@@ -121,8 +145,15 @@ drop n (_:xs) = drop (n-1) xs
 
 -- (!!)
 
--- filter
--- map
+filter :: (a -> Bool) -> [a] -> [a]
+filter p [] = []
+filter p (x:xs)
+    | p x = x: filter p xs
+    | otherwise = filter p xs
+
+map :: (a -> b) -> [a] -> [b]
+map f [] = []
+map f (x:xs) = f x : map f xs
 
 -- cycle
 -- repeat
