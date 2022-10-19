@@ -98,15 +98,17 @@ odd (Succ(Succ x)) = odd x
 (<^>) x (Succ y) = (<*>) x ((<^>) x y)
 
 -- quotient
-(</>) :: Nat -> Nat -> Nat --imcompleto
-(</>) x Zero = error "divisão por zero é indefinido"
+(</>) :: Nat -> Nat -> Nat
+(</>) _ Zero = error "divisão por zero é indefinido"
 (</>) x y 
-    | x <= y -> Zero 
-    | otherwise (<+>) (Succ Zero) ((</>) ((<->) x y) y)
+    | x == y = (Succ Zero)
+    | x <= y = Zero 
+    | otherwise = (<+>) (Succ Zero) ((</>) ((<->) x y) y)
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
-(<%>) = undefined
+(<%>) _ Zero = error "divisão por zero é indefinido"
+(<%>) x y = (<->) x (((<*>) y (((</>) x y))))
 
 -- divides
 (<|>) :: Nat -> Nat -> Bool
@@ -123,7 +125,8 @@ absDiff = undefined
 (|-|) = absDiff
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial Zero = (Succ Zero)
+factorial (Succ n) = (<*>) (Succ n) (factorial (n))
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
@@ -132,8 +135,11 @@ sg _ = Succ Zero
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
-lo = undefined
-
+lo b (Succ Zero) = Zero
+lo b a
+    | b == a = (Succ Zero)
+    | b > a = Zero
+    | otherwise = (<+>) (Succ Zero) (lo b ((</>) a b))
 
 --
 -- For the following functions we need Num(..).
