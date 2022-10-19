@@ -49,7 +49,9 @@ reverse [] = []
 reverse (x:xs) = snoc x (reverse xs)     
 
 (++) :: [a] -> [a] -> [a]
-(++) = undefined
+xs ++ []     = xs
+xs ++ [y]    = xs <: y
+xs ++ (y:ys) = (xs ++ [y]) ++ ys
 
 -- right-associative for performance!
 -- (what?!)
@@ -102,30 +104,29 @@ takeWhile _ []                 = []
 takeWhile f (x:xs)  | f x       = x : takeWhile f xs
                     | otherwise = []
 
--- dropWhile
 dropWhile :: (a -> Bool) -> [a] -> [a]
 dropWhile _ [] = []
 dropWhile f (x:xs) 
     | f x = dropWhile f xs
     | otherwise = x:xs
 
--- tails
 tails :: [a] -> [[a]]
 tails [] = [[]]
 tails (x:xs) = (x:xs) : tails xs
 
--- init
 init :: [a] -> [a]
 init [] = error "empty list"
 init [x] = [] 
 init (x:xs) = x : init xs
 
--- inits
 inits :: [a] -> [[a]]
 inits [] = [[]]
 inits xs = inits (init xs) <: xs 
 
 -- subsequences
+subsequences :: [a] -> [s[a]]
+subsequences [] = []
+--subsequences (x:xs) = ((subsequences xs) ++ x) : subsequences xs
 
 -- any
 any :: (a -> Bool) -> [a] -> Bool
@@ -137,6 +138,10 @@ any f = undefined
 -- or
 
 -- concat
+concat :: [a] -> [a]
+concat [[]] = []
+concat [xs, []] = [xs]
+concat [(x:xs)] = [x:concat xs] 
 
 -- elem using the funciton 'any' above
 
@@ -155,7 +160,10 @@ map :: (a -> b) -> [a] -> [b]
 map f [] = []
 map f (x:xs) = f x : map f xs
 
--- cycle
+cycle :: [a] -> [[a]]
+cycle [] = error "empty list"
+cycle xs = xs : cycle xs
+
 -- repeat
 -- replicate
 
