@@ -17,7 +17,7 @@ module ExCommonWords
 -- do not alter this import
 import Prelude
     ( Char , String , Int , Integer , Double , Float , Bool(..)
-    , Num(..) , Integral(..) , Enum(..) , Ord(..) , Eq(..)
+    , Num(..) , Integral(..) , Enum(..) , Ord(..) , Eq(..), Show(..)
     , not , (&&) , (||)
     , (.) , ($)
     , flip , curry , uncurry
@@ -37,15 +37,19 @@ import qualified Data.Char as C
 import MySort ( sort )
 
 -- **REPLACE** Data.List by your own home-made ExList!
-import ExList
+import ExList as L
     -- feel free to remove and/or add entities:
-    ( break
+    ( (++)
+    , break
+    , length
     , span
+    , dropWhile
     , concat
+    , reverse
     , map
     , filter
     , take
-    )
+    ) 
 
 -- Let's start with some type synonyms you might want to use:
 
@@ -54,32 +58,41 @@ type Word = String
 
 -- On with the functions now:
 
-
 commonWords
     :: Int     -- how many common words
     -> Text    -- the input text (book, poem, whatever)
     -> String  -- the output string with the results
 
-commonWords n =
+commonWords n = 
     concat . map showRun . take n .
     sortRuns . countRuns .
     sortWords . words .
     map C.toLower
 
 showRun :: (Int,Word) -> String
-showRun = undefined
+showRun (n,w) = w ++ ": " ++ show n ++ "\n" 
 
 -- if you think this makes your code more readable...
 type Run = [(Int,Word)]
 
 countRuns :: [Word] -> [(Int,Word)]
-countRuns = undefined
+countRuns [] = [] 
+countRuns (w:ws) = (1 + length us, w) : countRuns vs 
+    where 
+        (us, vs) = span (==w) ws 
 
 sortWords :: [Word] -> [Word]
-sortWords = sort    -- is this correct?
+sortWords = sort  
 
 sortRuns :: [(Int,Word)] -> [(Int,Word)]
-sortRuns = sort     -- is this correct?
+sortRuns = reverse . sort     
+
+-- tuplesToList :: [(Int,Word)] -> [[a]]
+-- tuplesToList (xs) = [[x,y] | (x,y) <- xs ]
 
 words :: Text -> [Word]
-words t = [t] 
+words t 
+    |t' == "" = []
+    |otherwise = word : words rest
+        where t' = dropWhile C.isSpace t
+              (word, rest) = break C.isSpace t'

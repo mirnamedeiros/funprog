@@ -12,6 +12,12 @@ module MySort
 sort :: Ord a => [a] -> [a]
 sort = msort
 
+-- sortTuples :: [(Int,String)] -> [(Int,String)]
+-- sortTuples ts = map (sortTuple) ts
+
+-- sortTuple :: (Ord a) => (a,a) -> (a,a)
+-- sortTuple (x,y) = (min x y, max x y)
+
 msort :: Ord a => [a] -> [a]
 msort []  = []
 msort [z] = [z]

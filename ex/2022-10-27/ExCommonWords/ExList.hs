@@ -2,7 +2,7 @@ module ExList where
 
 import Prelude
     ( Char , String , Int , Integer , Double , Float , Bool(..)
-    , Num(..) , Integral(..) , Enum(..) , Ord(..) , Eq(..)
+    , Num(..) , Integral(..) , Enum(..) , Ord(..) , Eq(..), Show(..)
     , not , (&&) , (||)
     , (.) , ($), curry , uncurry
     , otherwise , error , undefined
@@ -34,7 +34,7 @@ null _ = False
 
 length :: Integral i => [a] -> i
 length [] = 0
-lenght (_:xs) = 1 + lenght xs 
+length (_:xs) = 1 + length xs 
 
 sum :: Num a => [a] -> a
 sum [] = 0
@@ -125,8 +125,7 @@ inits xs = inits (init xs) <: xs
 
 -- subsequences
 subsequences :: [a] -> [s[a]]
-subsequences [] = []
---subsequences (x:xs) = ((subsequences xs) ++ x) : subsequences xs
+subsequences = undefined
 
 -- any
 any :: (a -> Bool) -> [a] -> Bool
