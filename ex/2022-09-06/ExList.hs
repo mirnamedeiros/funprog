@@ -100,15 +100,15 @@ drop 0 xs = xs
 drop n (_:xs) = drop (n-1) xs
 
 takeWhile :: (a -> Bool) -> [a] -> [a]
-takeWhile _ []                 = []
+takeWhile _ []                  = []
 takeWhile f (x:xs)  | f x       = x : takeWhile f xs
                     | otherwise = []
 
 dropWhile :: (a -> Bool) -> [a] -> [a]
-dropWhile _ [] = []
+dropWhile _ []              = []
 dropWhile f (x:xs) 
-    | f x = dropWhile f xs
-    | otherwise = x:xs
+                | f x       = dropWhile f xs
+                | otherwise = x:xs
 
 tails :: [a] -> [[a]]
 tails [] = [[]]
@@ -138,10 +138,10 @@ any f = undefined
 -- or
 
 -- concat
-concat :: [a] -> [a]
-concat [[]] = []
-concat [xs, []] = [xs]
-concat [(x:xs)] = [x:concat xs] 
+concat :: [[a]] -> [a]
+concat [] = []
+concat ([]:xs) = concat xs
+concat ((x:xs):ys) = x : concat (xs:ys)
 
 -- elem using the funciton 'any' above
 
@@ -182,6 +182,12 @@ cycle xs = xs : cycle xs
 -- splitAt n xs  =  (take n xs, drop n xs)
 
 -- break
+break :: (a -> Bool ) -> [a] -> ([a],[a])
+break p (xs) =  span (not . p) (xs)
+-- span
+span :: (a -> Bool ) -> [a] -> ([a],[a])
+span _ []   = ([],[])
+span p (xs) = (takeWhile p xs,dropWhile p xs)
 
 -- lines
 -- words
