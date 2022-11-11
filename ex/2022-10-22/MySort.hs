@@ -27,11 +27,13 @@ merge xs'@(x:xs) ys'@(y:ys)
     | otherwise = y : merge xs' ys
 
 halve :: [a] -> ([a],[a])
-halve []       = ([],[])
-halve [x]      = ([x],[])
-halve (x:y:xs) = (x:lxs, y:rxs)
-    where
-        (lxs,rxs) = halve xs
+halve xs = (take n xs,drop n xs) 
+    where n = length xs `div` 2 
+-- halve []       = ([],[])
+-- halve [x]      = ([x],[])
+-- halve (x:y:xs) = (x:lxs, y:rxs)
+--     where
+--         (lxs,rxs) = halve xs
 
 isort :: Ord a => [a] -> [a]
 isort [] = []
